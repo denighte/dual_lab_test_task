@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class AppTest extends Assert {
     private static final String INPUT_FILENAME = "input.txt";
@@ -30,7 +29,6 @@ public class AppTest extends Assert {
                         "Posh 10:15 11:10\n" +
                         "Posh 12:05 12:30\n" +
                         "Posh 17:25 18:01\n\n" +
-                        "Grotty 12:30 13:25\n" +
                         "Grotty 12:45 13:25",
                 String.join("\n", Files.readAllLines(Paths.get(OUTPUT_FILENAME))));
     }

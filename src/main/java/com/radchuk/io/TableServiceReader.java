@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 public class TableServiceReader {
     /**
-     * Reads bus timetable and writes it to <code>LinkedList</code> collection, to achieve more effective delete operation later
+     * Reads bus timetable and writes it to <code>ArrayList</code> collection.
      * @param filename path to a data file
      * @return bus schedule linked list
      * @throws IOException if any i/o operation error occurs
      */
     public static List<BusSchedule> read(Path filename) throws IOException {
-        return Files.lines(filename).map(line -> line.split("\\s")).map(data -> new BusSchedule(data[0], LocalTime.parse(data[1]), LocalTime.parse(data[2]))).collect(Collectors.toCollection(LinkedList::new));
+        return Files.lines(filename).map(line -> line.split("\\s")).map(data -> new BusSchedule(data[0], LocalTime.parse(data[1]), LocalTime.parse(data[2]))).collect(Collectors.toList());
     }
 }

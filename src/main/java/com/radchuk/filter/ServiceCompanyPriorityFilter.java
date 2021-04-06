@@ -3,10 +3,7 @@ package com.radchuk.filter;
 import com.radchuk.entity.BusSchedule;
 import com.radchuk.entity.Company;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ServiceCompanyPriorityFilter implements ServiceFilter {
@@ -16,7 +13,7 @@ public class ServiceCompanyPriorityFilter implements ServiceFilter {
      * @param schedules bus schedule list
      */
     @Override
-    public void filter(List<BusSchedule> schedules) {
+    public List<BusSchedule> filter(List<BusSchedule> schedules) {
         Map<Integer, BusSchedule> timeIdDict = new HashMap<>();
         List<BusSchedule> schedulesToRemove = new ArrayList<>();
         for (BusSchedule schedule : schedules) {
@@ -24,7 +21,9 @@ public class ServiceCompanyPriorityFilter implements ServiceFilter {
             prioritizePoshCompany(schedulesToRemove, schedule, timeIdDict.get(timeId));
             timeIdDict.put(timeId, schedule);
         }
-        schedules.removeAll(schedulesToRemove);
+        List<BusSchedule> result = new ArrayList<>(schedules);
+        result.removeAll(schedulesToRemove);
+        return result;
     }
 
     private void prioritizePoshCompany(List<BusSchedule> schedulesToRemove, BusSchedule currentSchedule, BusSchedule equalTimeBusSchedule) {
