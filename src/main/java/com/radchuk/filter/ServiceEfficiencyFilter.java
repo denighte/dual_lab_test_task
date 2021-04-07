@@ -19,7 +19,6 @@ public class ServiceEfficiencyFilter implements ServiceFilter {
 
     @Override
     public List<BusSchedule> filter(List<BusSchedule> schedules) {
-        // Creating priority queue
         Queue<TimeSegment> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(TimeSegment::getStart));
         List<TimeSegment> timeSegments = generateTimeSegments(schedules);
         List<BusSchedule> result = new ArrayList<>();
@@ -48,13 +47,17 @@ public class ServiceEfficiencyFilter implements ServiceFilter {
                                                                            i)),
                 IntStream.range(0, schedules.size()).mapToObj(i -> new TimeSegment(getSegmentPointEnd(schedules.get(i)),
                         getSegmentPointStart(schedules.get(i)),
-                        i))).sorted((a,b) -> {
-                            int res = a.getStart() - b.getStart();
-                            if (res == 0) {
-                                return b.getEnd() - a.getEnd();
-                            }
-                            return res;
-        }).collect(Collectors.toList());
+                        i))).sorted(compareByStartPointAndThenByEndReversed()).collect(Collectors.toList());
+    }
+
+    private Comparator<TimeSegment> compareByStartPointAndThenByEndReversed() {
+        return (a,b) -> {
+            int res = a.getStart() - b.getStart();
+            if (res == 0) {
+                return b.getEnd() - a.getEnd();
+            }
+            return res;
+        };
     }
 
     private int getSegmentPointStart(BusSchedule schedule) {
